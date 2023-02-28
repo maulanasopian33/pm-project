@@ -25,4 +25,5 @@ Auth::routes();
 Route::post('/login', [loginController::class,'index']);
 Route::middleware('auth:api')->group(function(){
     Route::post('/add-member',[adminController::class,'addmember']);
+    Route::post('/add-workspace',[adminController::class,'addworkspace']);
 });
