@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\APi\adminController;
 use App\Http\Controllers\APi\loginController;
+use App\Http\Controllers\TaskController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,5 +28,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/whois', [loginController::class,'whois']);
     Route::post('/add-member',[adminController::class,'addmember']);
     Route::post('/add-workspace',[adminController::class,'addworkspace']);
+    Route::resource('/task', TaskController::class);
+    Route::get('/task/workspace/{id}',[TaskController::class, 'getbyworkspace']);
 });
 
