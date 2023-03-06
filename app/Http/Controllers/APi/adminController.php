@@ -50,7 +50,7 @@ class adminController extends Controller
         try{
             $file = $req->avatar->move(public_path('uploads/image'), $req->avatar->getClientOriginalName());
             // $image_path = $req->file('avatar')->store('image', 'public');
-            $image_path = 'uploads/image/'.$req->image->getClientOriginalName();
+            $image_path = '/uploads/image/'.$req->avatar->getClientOriginalName();
             $data = Workspace::create([
                 'name'      => $req->name,
                 'assigment' => $req->assigment,
@@ -66,5 +66,17 @@ class adminController extends Controller
                 'message'=> 'gagal menambahkan member'
             ]);
         }
+    }
+    public function getworkspace(){
+        $user = Auth::user();
+        if($user->admin){
+            return response()->json(Workspace::get());
+        }
+        return response()->json(Workspace::where('assigment','LIKE',"%{$user->id}%")->get());
+    }
+
+    public function getworkspaceByName($name){
+        return response()->json([
+            "data" => Workspace::where('name',$name)->get()]);
     }
 }
