@@ -11,6 +11,7 @@ class Workspace extends Model
     protected $fillable = [
         'name',
         'assigment',
-        'avatar'
+        'avatar',
+        'deskripsi'
     ];
 }

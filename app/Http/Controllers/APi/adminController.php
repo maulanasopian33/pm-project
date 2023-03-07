@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class adminController extends Controller
 {
-    public function addmember(Request $req){
+    public function addteam(Request $req){
         $user = Auth::user();
         $admin = $user->admin;
         if(!$admin){
@@ -37,7 +37,12 @@ class adminController extends Controller
             ]);
         }
     }
-
+    public function getteam(){
+        return response()->json([
+            'status' => true,
+            'data'   => User::get()
+        ]);
+    }
     public function addworkspace(Request $req){
         $user = Auth::user();
         $admin = $user->admin;
@@ -47,6 +52,7 @@ class adminController extends Controller
                 'message'=> 'anda bukan admin'
             ]);
         }
+        // return $req;
         try{
             $file = $req->avatar->move(public_path('uploads/image'), $req->avatar->getClientOriginalName());
             // $image_path = $req->file('avatar')->store('image', 'public');
@@ -54,16 +60,18 @@ class adminController extends Controller
             $data = Workspace::create([
                 'name'      => $req->name,
                 'assigment' => $req->assigment,
+                'deskripsi' => $req->deskripsi,
                 'avatar'    => $image_path
             ]);
             return response()->json([
                 'status' => true,
-                'message'=> 'berhasil menambahkan member'
+                'message'=> 'berhasil menambahkan workspace'
             ]);
         }catch(Exception $e){
             return response()->json([
                 'status' => false,
-                'message'=> 'gagal menambahkan member'
+                'message'=> 'gagal menambahkan gagal',
+                'data'   => $e
             ]);
         }
     }

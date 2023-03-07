@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PhpParser\Node\Stmt\Return_;
+
 class TaskController extends Controller
 {
     /**
@@ -34,8 +36,8 @@ class TaskController extends Controller
      */
     public function store(Request $req)
     {
-        $file = $req->avatar->move(public_path('uploads/image'), $req->avatar->getClientOriginalName());
-        $image_path = '/uploads/image/'.$req->avatar->getClientOriginalName();
+        // $file = $req->avatar->move(public_path('uploads/image'), $req->avatar->getClientOriginalName());
+        // $image_path = '/uploads/image/'.$req->avatar->getClientOriginalName();
         try{
             $save = task::create([
                 'id_task'   => Str::uuid()->toString(),
@@ -43,15 +45,17 @@ class TaskController extends Controller
                 'assigment' => $req->assigment,
                 'start_date'=> $req->start_date,
                 'due_date'  => $req->due_date,
+                'deskripsi' => $req->deskripsi,
+                'priority'  => $req->priority,
                 'status'    => $req->status,
-                'avatar'    => $image_path,
+                'avatar'    => '$image_path',
                 'workspace' => $req->workspace
             ]);
             return response()->json([
                 'status'  => true,
                 'message' => 'created',
                 'data'    => $save
-            ],400);
+            ],200);
         }catch(Exception $e){
             return response()->json([
                 'status'  => false,

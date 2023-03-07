@@ -26,8 +26,10 @@ Auth::routes();
 Route::post('/login', [loginController::class,'index']);
 Route::middleware('auth:api')->group(function(){
     Route::get('/whois', [loginController::class,'whois']);
-    Route::post('/add-member',[adminController::class,'addmember']);
+    Route::post('/add-member',[adminController::class,'addteam']);
+    Route::get('/get-team',[adminController::class,'getteam']);
     Route::post('/add-workspace',[adminController::class,'addworkspace']);
+    Route::get('/get-workspace',[adminController::class,'getworkspace']);
     Route::resource('/task', TaskController::class);
     Route::get('/task/workspace/{id}',[TaskController::class, 'getbyworkspace']);
 });

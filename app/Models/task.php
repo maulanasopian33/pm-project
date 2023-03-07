@@ -10,5 +10,5 @@ class task extends Model
     use HasFactory;
     protected $primaryKey = 'id_task';
     public $incrementing = false;
-    protected $fillable = ['id_task','name','avatar','workspace','assigment','start_date','due_date','status','avatar'];
+    protected $fillable = ['id_task','priority','deskripsi','name','avatar','workspace','assigment','start_date','due_date','status','avatar'];
 }

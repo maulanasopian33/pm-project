@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamp('start_date')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->string('workspace');
+            $table->string('priority');
+            $table->string('deskripsi');
             $table->string('status');
             $table->string('avatar');
 
