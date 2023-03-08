@@ -3,6 +3,7 @@
 use App\Http\Controllers\APi\adminController;
 use App\Http\Controllers\APi\loginController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TodoController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,11 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/add-workspace',[adminController::class,'addworkspace']);
     Route::get('/get-workspace',[adminController::class,'getworkspace']);
     Route::resource('/task', TaskController::class);
+    Route::post('/todo', [TodoController::class,'store']);
+    Route::get('/todo/{id}', [TodoController::class,'index']);
+    Route::post('/todo/update', [TodoController::class,'updates']);
+    Route::delete('/todo/{id}', [TodoController::class,'destroy']);
     Route::get('/task/workspace/{id}',[TaskController::class, 'getbyworkspace']);
+    Route::get('/task/bytask/{id}',[TaskController::class, 'getbytask']);
 });
 

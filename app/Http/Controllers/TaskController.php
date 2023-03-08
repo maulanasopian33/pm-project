@@ -98,6 +98,13 @@ class TaskController extends Controller
             'data'   => task::where('assigment','LIKE',"%{$user->id}%")->where('workspace',$id)->get()
         ]);
     }
+    public function getbytask($id){
+        $user = Auth::user();
+        return response()->json([
+            'status' => true,
+            'data'   => task::firstWhere('assigment','LIKE',"%{$user->id}%")->where('name',$id)->get()
+        ]);
+    }
     public function destroy(task $task)
     {
         $name = $task->name;

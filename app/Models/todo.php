@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class todo extends Model
 {
     use HasFactory;
+    protected $fillable = ['id_task','name','status'];
 }
