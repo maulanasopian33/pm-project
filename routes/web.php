@@ -32,7 +32,7 @@ Route::get('/text',function(){
 Route::get('/chat/{id}',function($id){
     chat::dispatch($id,[
         'message' => "hai",
-        'from'    => 'admin',
+        'from'    => 'mes',
         'type'    => 'normal',
         'reply'   => false,
         'time'    => 'dasdwmnamnsdmas'

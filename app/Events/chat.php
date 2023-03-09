@@ -33,7 +33,7 @@ class chat implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat-'.$this->chat_id),
+            new Channel('chat-'.$this->chat_id),
         ];
     }
 }

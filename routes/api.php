@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\APi\adminController;
 use App\Http\Controllers\APi\loginController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TodoController;
 use App\Models\User;
@@ -38,5 +39,6 @@ Route::middleware('auth:api')->group(function(){
     Route::delete('/todo/{id}', [TodoController::class,'destroy']);
     Route::get('/task/workspace/{id}',[TaskController::class, 'getbyworkspace']);
     Route::get('/task/bytask/{id}',[TaskController::class, 'getbytask']);
+    Route::post('/chat/{channel}',[ChatController::class,'store']);
 });
 
