@@ -2,6 +2,7 @@
 
 use App\Events\chat;
 use App\Events\GlobalMessage;
+use App\Events\Notif;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,14 @@ Route::get('/chat/{id}',function($id){
         'type'    => 'normal',
         'reply'   => false,
         'time'    => 'dasdwmnamnsdmas'
+    ]);
+});
+Route::get('/notif/{id}',function($id){
+    Notif::dispatch($id,[
+        'message'    => "hai",
+        'from'       => 'mes',
+        'assigment'  => false,
+        'time'       => 'dasdwmnamnsdmas'
     ]);
 });
 
