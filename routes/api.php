@@ -39,6 +39,8 @@ Route::middleware('auth:api')->group(function(){
     Route::delete('/todo/{id}', [TodoController::class,'destroy']);
     Route::get('/task/workspace/{id}',[TaskController::class, 'getbyworkspace']);
     Route::get('/task/bytask/{id}',[TaskController::class, 'getbytask']);
+    Route::post('/task/{id}',[TaskController::class, 'update']);
     Route::post('/chat/{channel}',[ChatController::class,'store']);
+    Route::get('/chat/{id}',[ChatController::class,'index']);
 });
 

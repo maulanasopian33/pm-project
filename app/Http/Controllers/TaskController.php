@@ -83,9 +83,22 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, task $task)
+    public function update(Request $request, $id)
     {
-        //
+        try{
+            $data =task::where('id_task',$id)->get();
+            $data[0]->status = $request->status;
+            $data[0]->save();
+            return response()->json([
+                'status'  => true,
+                'message' => 'Updated',
+            ],200);
+        }catch(\Exception $e){
+            return response()->json([
+                'status'  => false,
+                'message' => "Teing error Kunaon?",
+            ],200);
+        }
     }
 
     /**
