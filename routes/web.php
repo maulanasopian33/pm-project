@@ -4,7 +4,9 @@ use App\Events\chat;
 use App\Events\GlobalMessage;
 use App\Events\Notif;
 use App\Http\Controllers\TaskController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Pusher\PushNotifications\PushNotifications;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +28,6 @@ Route::get('/text',function(){
         'message' => "hai",
         'from'    => 'admin',
         'type'    => 'normal',
-        'reply'   => false,
         'time'    => 'dasdwmnamnsdmas'
     ]);
 });
@@ -52,3 +53,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/task', TaskController::class);
+
+
+

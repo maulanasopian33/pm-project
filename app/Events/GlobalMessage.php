@@ -27,7 +27,6 @@ class GlobalMessage implements ShouldBroadcast
         $this->message = $data['message'];
         $this->from    = $data['from'];
         $this->type    = $data['type'];
-        $this->reply   = $data['reply'];
         $this->time    = $data['time'];
     }
 
