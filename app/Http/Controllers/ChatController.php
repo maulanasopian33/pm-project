@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Events\chat as EventsChat;
 use App\Models\chat;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ChatController extends Controller
@@ -31,25 +34,49 @@ class ChatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $channel)
+    public function store(Request $req, $channel)
     {
-        EventsChat::dispatch($channel,[
-            'message' => $request->msg,
-            'from'    => $request->from,
-            'type'    => $request->type,
-            'reply'   => $request->reply,
-            'time'    => $request->time
-        ]);
+        $mytime = Carbon::now();
         try{
-            chat::create([
-                'id_chat' => Str::uuid()->toString(),
-                'task_id' => $channel,
-                'message' => $request->msg,
-                'from'    => $request->from,
-                'type'    => $request->type,
-                'reply'   => $request->reply,
-                'time'    => $request->time
-            ]);
+            if($req->type === 'file'){
+                $file = $req->msg->move(public_path('uploads/image'), $req->msg->getClientOriginalName());
+                // $image_path = $req->file('avatar')->store('image', 'public');
+                $image_path = '/uploads/image/'.$req->msg->getClientOriginalName();
+                chat::create([
+                    'id_chat' => Str::uuid()->toString(),
+                    'task_id' => $channel,
+                    'message' => $image_path,
+                    'from'    => $req->from,
+                    'type'    => $req->type,
+                    'reply'   => $req->reply,
+                    'time'    => $mytime->toDateTimeString()
+                ]);
+                EventsChat::dispatch($channel,[
+                    'message' => $image_path,
+                    'from'    => $req->from,
+                    'type'    => $req->type,
+                    'reply'   => $req->reply,
+                    'time'    => $mytime
+                ]);
+            }else{
+                chat::create([
+                    'id_chat' => Str::uuid()->toString(),
+                    'task_id' => $channel,
+                    'message' => $req->msg,
+                    'from'    => $req->from,
+                    'type'    => $req->type,
+                    'reply'   => $req->reply,
+                    'time'    => $mytime->toDateTimeString()
+                ]);
+                EventsChat::dispatch($channel,[
+                    'message' => $req->msg,
+                    'from'    => $req->from,
+                    'type'    => $req->type,
+                    'reply'   => $req->reply,
+                    'time'    => $mytime
+                ]);
+            }
+            return 'ok';
         }catch(\Exception $e){
             return $e;
         }
