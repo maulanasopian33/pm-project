@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\GlobalMessage;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Workspace;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +43,19 @@ class adminController extends Controller
         return response()->json([
             'status' => true,
             'data'   => User::get()
+        ]);
+    }
+    public function sendNotif(Request $req){
+        $mytime = Carbon::now();
+        GlobalMessage::dispatch([
+            'message' => $req->message,
+            'from'    => $req->from,
+            'type'    => $req->type,
+            'time'    => $mytime->toDateTimeString()
+        ]);
+        return response()->json([
+            'status' => true,
+            'message'=> "Notif Published"
         ]);
     }
     public function addworkspace(Request $req){

@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/whois', [loginController::class,'whois']);
     Route::post('/add-member',[adminController::class,'addteam']);
     Route::get('/get-team',[adminController::class,'getteam']);
+    Route::post('/sendNotif',[adminController::class,'sendNotif']);
     Route::post('/add-workspace',[adminController::class,'addworkspace']);
     Route::get('/get-workspace',[adminController::class,'getworkspace']);
     Route::resource('/task', TaskController::class);
@@ -44,51 +45,4 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/task/{id}',[TaskController::class, 'update']);
     Route::post('/chat/{channel}',[ChatController::class,'store']);
     Route::get('/chat/{id}',[ChatController::class,'index']);
-});
-
-
-Route::post('/pusher/auth', function (Request $request) {
-    // $user = Auth::user();
-
-    // if (!$user) {
-    //     return response()->json(['error' => 'Unauthorized'], 401);
-    // }
-
-    $options = array(
-        'cluster' => 'PUSHER_APP_CLUSTER',
-        'useTLS' => true
-    );
-    $pusher = new Pusher(
-        '94e6a87800b6adf547b1',
-        'ccd1ff026000d4d49edf',
-        '1558044',
-        $options
-    );
-
-    $socket_id = $request->socket_id;
-    $channel_name = $request->channel_name;
-    $auth = $pusher->socket_auth($channel_name, $socket_id, json_encode(['user_id' => $request->id]));
-
-    return response($auth);
-});
-
-Route::post('/send-notification', function (Request $request) {
-    $beamsClient = new PushNotifications([
-        "instanceId" => "2ba8fe30-0926-4eb5-8310-2e350311ebc3",
-        "secretKey" => "74E11C36030A9A657A6CC9648CB2C4047384892CCE17135C1057E042C711899C",
-    ]);
-
-    $publishResponse = $beamsClient->publishToInterests(
-        ["hello"],
-        [
-            "web" => [
-                "notification" => [
-                    "title" => $request->input('title'),
-                    "body" => $request->input('body'),
-                ],
-            ],
-        ]
-    );
-
-    return response()->json(['success' => true]);
 });

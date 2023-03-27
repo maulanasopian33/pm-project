@@ -58,6 +58,10 @@ class ChatController extends Controller
                     'reply'   => $req->reply,
                     'time'    => $mytime
                 ]);
+                return response()->json([
+                    'status' => true,
+                    'message'   => $image_path
+                ]);
             }else{
                 chat::create([
                     'id_chat' => Str::uuid()->toString(),
@@ -75,8 +79,12 @@ class ChatController extends Controller
                     'reply'   => $req->reply,
                     'time'    => $mytime
                 ]);
+                return response()->json([
+                    'status' => true,
+                    'message'   => 'ok'
+                ]);
             }
-            return 'ok';
+
         }catch(\Exception $e){
             return $e;
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\task;
+use App\Models\todo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,9 +114,18 @@ class TaskController extends Controller
     }
     public function getbytask($id){
         $user = Auth::user();
+        $todo = todo::where('id_task',$id)->get();
+        $sumtodo = $todo->count();
+        $todo_done = $todo->filter(function($item){ return $item['status'] = true; })->count();
+        $task = task::firstWhere('assigment','LIKE',"%{$user->id}%")->where('id_task',$id)->get();
         return response()->json([
             'status' => true,
-            'data'   => task::firstWhere('assigment','LIKE',"%{$user->id}%")->where('name',$id)->get()
+            'data'   => [
+                'data' => $task,
+                'sum_todo' => $sumtodo,
+                'todo_done'=> $todo_done
+
+            ]
         ]);
     }
     public function destroy(task $task)
