@@ -37,11 +37,22 @@ class TodoController extends Controller
                 'name'      => $request->name,
                 'status'    => $request->status
             ]);
-            // if(){
-            //     $data =task::where('id_task',$data[0]->id_task)->get();
-            //     $data[0]->status = "OnProgress";
-            //     $data[0]->save();
-            // }
+            $todo = todo::where('id_task',$request->id_task)->get();
+            $sumtodo = $todo->count();
+            $todo_done = $todo->filter(function($item){ return $item->status == true; })->count();
+            $data =task::where('id_task',$request->id_task)->get();
+            if($sumtodo == 0) {
+                $data[0]->status = "created";
+                $data[0]->save();
+            }else{
+                if($todo_done == $sumtodo){
+                    $data[0]->status = "finished";
+                    $data[0]->save();
+                }else{
+                    $data[0]->status = "OnProgress";
+                    $data[0]->save();
+                }
+            }
             return response()->json([
                 'status'  => true,
                 'message' => 'created',
@@ -92,7 +103,6 @@ class TodoController extends Controller
                 if($todo_done == $sumtodo){
                     $data[0]->status = "finished";
                     $data[0]->save();
-                    return 'finis' . $todo_done;
                 }else{
                     $data[0]->status = "OnProgress";
                     $data[0]->save();
@@ -117,15 +127,39 @@ class TodoController extends Controller
     {
 
         try{
-            $todo = todo::where('name',$id)->delete();
-            return response()->json([
-                'status'  => true,
-                'message' => 'Deleted',
-            ],200);
+            $todos = todo::find($id);
+            $hapus = todo::find($id)->delete();
+                if($hapus){
+                    $todo = todo::where('id_task',$todos['id_task'])->get();
+                    $sumtodo = $todo->count();
+                    $todo_done = $todo->filter(function($item){ return $item->status == true; })->count();
+                    $data =task::where('id_task',$todos['id_task'])->get();
+                    if($sumtodo == 0) {
+                        $data[0]->status = "created";
+                        $data[0]->save();
+                    }else{
+                        if($todo_done == $sumtodo){
+                            $data[0]->status = "finished";
+                            $data[0]->save();
+                        }else{
+                            $data[0]->status = "OnProgress";
+                            $data[0]->save();
+                        }
+                    }
+                    return response()->json([
+                        'status'  => true,
+                        'message' => 'Deleted',
+                    ],200);
+                }else{
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Delete Failed',
+                    ],200);
+                }
         }catch(\Exception $e){
             return response()->json([
                 'status'  => false,
-                'message' => 'Notfound',
+                'message' => $e,
             ],404);
         }
 
