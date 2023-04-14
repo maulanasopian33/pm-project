@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->string('id_chat')->primary();
             $table->string('task_id');
+            $table->foreign('task_id')->references('id_task')->on('tasks')->onDelete('cascade')->onUpdate('cascade');
             $table->string('message');
             $table->string('from');
             $table->string('type');

@@ -18,9 +18,11 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $task = task::where('assigment','LIKE',"%{$user->id}%")->get();
         return response()->json([
             'status' => true,
-            'data'   => task::where('assigment','LIKE',"%{$user->id}%")->get()
+            'count'  => $task->count(),
+            'data'   => $task
         ]);
     }
 
@@ -107,9 +109,11 @@ class TaskController extends Controller
      */
     public function getbyworkspace($id){
         $user = Auth::user();
+        $task = task::where('assigment','LIKE',"%{$user->id}%")->where('workspace',$id)->get();
         return response()->json([
             'status' => true,
-            'data'   => task::where('assigment','LIKE',"%{$user->id}%")->where('workspace',$id)->get()
+            'data'   => $task,
+            'count'  => $task->count()
         ]);
     }
     public function getbytask($id){

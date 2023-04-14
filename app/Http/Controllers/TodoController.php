@@ -6,6 +6,7 @@ use App\Models\task;
 use App\Models\todo;
 use App\Services\PayUService\Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
@@ -14,6 +15,7 @@ class TodoController extends Controller
      */
     public function index($id)
     {
+
         return response()->json(todo::where('id_task',$id)->get());
     }
 
@@ -32,15 +34,19 @@ class TodoController extends Controller
     {
 
         try{
+
             todo::create([
                 'id_task'   => $request->id_task,
                 'name'      => $request->name,
                 'status'    => $request->status
             ]);
+            // logging
+            Log::channel('ActionRequest')->info($request->from." add new todo [".$request->name."] in Route ".$request->getPathInfo()." with parameters: ".$request);
+
             $todo = todo::where('id_task',$request->id_task)->get();
             $sumtodo = $todo->count();
             $todo_done = $todo->filter(function($item){ return $item->status == true; })->count();
-            $data =task::where('id_task',$request->id_task)->get();
+            $data = task::where('id_task',$request->id_task)->get();
             if($sumtodo == 0) {
                 $data[0]->status = "created";
                 $data[0]->save();

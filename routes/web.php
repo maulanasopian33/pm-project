@@ -6,6 +6,7 @@ use App\Events\Notif;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Pusher\PushNotifications\PushNotifications;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +22,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd('ddd');
-});
+    $log = [
+        'method' => "dsa",
+        'url' => "dsad",
+    ];
+    Log::info('Request', $log);
+})->middleware('log.requests');
 Route::get('/text',function(){
     GlobalMessage::dispatch([
         'message' => "hai",

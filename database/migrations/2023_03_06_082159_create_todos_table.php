@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->string('id_task');
+            $table->foreign('id_task')->references('id_task')->on('tasks')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->boolean('status');
             $table->timestamps();

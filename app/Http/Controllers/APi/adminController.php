@@ -26,6 +26,7 @@ class adminController extends Controller
             $data = User::create([
                 'name'      => $req->name,
                 'email'     => $req->email,
+                'nomor'     => $req->nomor,
                 'password'  => bcrypt($req->password)
             ]);
             return response()->json([
@@ -35,7 +36,8 @@ class adminController extends Controller
         }catch(Exception $e){
             return response()->json([
                 'status' => false,
-                'message'=> 'gagal menambahkan member'
+                'message'=> 'gagal menambahkan member',
+                'data'   => $e
             ]);
         }
     }
@@ -101,5 +103,30 @@ class adminController extends Controller
     public function getworkspaceByName($name){
         return response()->json([
             "data" => Workspace::where('name',$name)->get()]);
+    }
+
+
+    public function destroymember($id)
+    {
+        try{
+            $hapus = User::find($id)->delete();
+                if($hapus){
+                    return response()->json([
+                        'status'  => true,
+                        'message' => "Deleted",
+                    ]);
+                }else{
+                    return response()->json([
+                        'status'  => false,
+                        'message' => "Gagal Menghapus",
+                    ]);
+                }
+        }catch(\Exception $e){
+            return response()->json([
+                'status'  => false,
+                'message' => $e,
+            ],404);
+        }
+
     }
 }

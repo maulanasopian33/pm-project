@@ -3,7 +3,7 @@
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
-
+date_default_timezone_set('Asia/Jakarta');
 return [
 
     /*
@@ -62,7 +62,16 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
-
+        'routeRequest' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/Route/routeRequest-' . date('Y-m-d H') . '.log'),
+            'level' => 'debug',
+        ],
+        'ActionRequest' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/Action/log-' . date('Y-m-d H') . '.log'),
+            'level' => 'debug',
+        ],
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
